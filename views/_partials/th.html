@@ -1,0 +1,12 @@
+<% sortDir = options.sortOn === field ? (options.sortDir === "ASC" ? "DESC" :
+"ASC") : "DESC" %>
+
+<th>
+  <div class="sort-container">
+    <a href="/todo?sortDir=<%= sortDir %>&amp;sortOn=<%= field %>">
+      <% if (options.sortOn === field) { %>
+      <span class="fa-solid fa-arrow-<%= options.sortDir === "ASC" ? "down" : "up" %>-short-wide"></span>
+      <% } %> <%= label %>
+    </a>
+  </div>
+</th>

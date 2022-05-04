@@ -1,0 +1,47 @@
+<html>
+  <%- include("_partials/header.html") %>
+
+  <body>
+    <div class="container">
+      <%- include("_partials/nav.html") %>
+      <article>
+        <header>
+          <h1 class="slim"><%= todo.title %></h1>
+        </header>
+
+        <form method="POST" action="/todo/<%= todo.id %>">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="hidden" name="_method" value="PUT" />
+              <input
+                placeholder="title"
+                type="text"
+                name="todo[title]"
+                value="<%= todo.title %>"
+              />
+              <textarea
+                placeholder="markdown description"
+                rows="10"
+                name="todo[description]"
+              >
+<%= todo.description %></textarea
+              >
+              <div class="btn-container">
+                <a href="/todo" class="secondary" role="button">
+                  <span class="fa-solid fa-backward"></span>
+                  Cancel
+                </a>
+
+                <button type="submit" class="center">
+                  <span class="fa-solid fa-floppy-disk"></span>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+            <div class="col-xs-6" id="markdown-preview"></div>
+          </div>
+        </form>
+      </article>
+    </div>
+  </body>
+</html>

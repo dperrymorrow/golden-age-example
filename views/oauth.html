@@ -1,0 +1,33 @@
+<html>
+  <%- include("_partials/header.html") %>
+
+  <body>
+    <dialog open>
+      <article>
+        <header>
+          <h2 class="slim">OAuth with Github</h2>
+        </header>
+        <div class="row">
+          <div class="col-xs-3 center" style="font-size: 5.5rem">
+            <span
+              class="fa-brands fa-github full"
+              style="font-size: 5rem"
+            ></span>
+          </div>
+          <div class="col-xs-9">
+            <p>
+              Authenticate with Github to associate your todos to your account.
+              We dont ask for anything that is not already public in scope.
+            </p>
+          </div>
+        </div>
+        <footer>
+          <a role="button" href="<%= authorizeUrl %>" class="center">
+            <span class="fa-solid fa-right-to-bracket"></span>
+            Authenticate
+          </a>
+        </footer>
+      </article>
+    </dialog>
+  </body>
+</html>

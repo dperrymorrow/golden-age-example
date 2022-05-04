@@ -1,0 +1,116 @@
+<html>
+  <%- include("_partials/header.html") %>
+
+  <body>
+    <progress indeterminate="true"></progress>
+
+    <div class="container">
+      <%- include("_partials/nav.html") %>
+      <article>
+        <header>
+          <hgroup>
+            <h2>Todos</h2>
+            <h3>Some things that gotta get done...</h3>
+          </hgroup>
+
+          <form action="/todo" method="get">
+            <% if (options.sortOn) { %>
+            <input type="hidden" name="sortOn" value="<%= options.sortOn %>" />
+            <input
+              type="hidden"
+              name="sortDir"
+              value="<%= options.sortDir %>"
+            />
+            <% } %>
+
+            <input name="search" value="<%= options.search %>" type="search" />
+          </form>
+        </header>
+
+        <table class="todo-list">
+          <thead>
+            <tr>
+              <% Object.entries({complete: "Completed", title: "Title",
+              modified: "Last Updated"}).forEach(([key, val]) => { %> <%-
+              include("_partials/th.html", { field: key, label: val }) %> <% })
+              %>
+
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% todos.forEach(todo=> { %>
+            <tr>
+              <td>
+                <form action="/todo/<%= todo.id %>" method="POST">
+                  <input type="hidden" name="_method" value="PUT" />
+                  <input type="checkbox" <%= todo.complete ? 'checked="true"' :
+                  null %> />
+                </form>
+              </td>
+
+              <% if (locals.editing===todo.id) { %>
+
+              <td colspan="2">
+                <form class="block" action="/todo/<%= todo.id %>" method="POST">
+                  <input type="hidden" name="_method" value="PUT" />
+                  <input
+                    class="edit-title-input"
+                    type="text"
+                    name="todo[title]"
+                    value="<%= todo.title %>"
+                  />
+                </form>
+              </td>
+
+              <% } else { %>
+
+              <td>
+                <a href="/todo/<%= todo.id %>"> <%= todo.title %> </a>
+              </td>
+
+              <td><%= new Date(todo.modified).toLocaleString() %></td>
+
+              <% } %>
+
+              <td class="center">
+                <div class="btn-container">
+                  <a href="/todo/<%= todo.id %>/edit" role="button">
+                    <i class="fa-solid fa-pencil"></i>
+                  </a>
+
+                  <form
+                    class="inline"
+                    action="/todo/<%= todo.id %>"
+                    method="POST"
+                  >
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button
+                      type="submit"
+                      class="secondary fa-solid fa-trash"
+                    ></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <footer>
+          <form method="post" action="/todo" class="new-todo">
+            <div class="grid">
+              <label>
+                <input
+                  type="text"
+                  name="todo[title]"
+                  placeholder="add another todo"
+                />
+              </label>
+            </div>
+          </form>
+        </footer>
+      </article>
+    </div>
+  </body>
+</html>
