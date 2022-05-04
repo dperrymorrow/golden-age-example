@@ -1,29 +1,29 @@
 {
-  "name": "patch-kit-example",
+  "name": "golden-age-example",
   "version": "1.0.0",
-  "description": "Example application using patch-kid",
+  "description": "Example application using golden-age",
   "main": "index.js",
   "scripts": {
-    "dev:server": "nodemon index.js",
+    "dev": "nodemon index.js",
     "serve": "node index.js",
     "db:clear": "rm db/todos_database.db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dperrymorrow/patch-kit-example.git"
+    "url": "git+https://github.com/dperrymorrow/golden-age-example.git"
   },
   "keywords": [
-    "patch-kit",
+    "golden-age",
     "vdom",
     "virtual-dom"
   ],
   "author": "David Morrow",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dperrymorrow/patch-kit-example/issues"
+    "url": "https://github.com/dperrymorrow/golden-age-example/issues"
   },
-  "homepage": "https://github.com/dperrymorrow/patch-kit-example#readme",
+  "homepage": "https://github.com/dperrymorrow/golden-age-example#readme",
   "dependencies": {
     "@octokit/core": "^3.6.0",
     "body-parser": "^1.19.1",
@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "eslint": "^8.14.0",
-    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "golden-age": "^1.0.1",
     "nodemon": "^2.0.16"
   }
 }
