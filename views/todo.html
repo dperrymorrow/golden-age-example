@@ -1,5 +1,5 @@
 <html>
-  <%- include("_partials/header.html") %>
+  <%- include("_partials/header.html", { title: todo.title }) %>
 
   <body>
     <div class="container">
@@ -14,6 +14,7 @@
             <div class="col-xs-6">
               <input type="hidden" name="_method" value="PUT" />
               <input
+                class="title-input"
                 placeholder="title"
                 type="text"
                 name="todo[title]"

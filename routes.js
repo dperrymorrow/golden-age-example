@@ -12,6 +12,13 @@ function helpers(req) {
       return req.session?.user;
     },
 
+    highlight(string) {
+      const search = req.session?.options?.search;
+      return search
+        ? string.replace(search, `<span class="highlight">${search}</span>`)
+        : string;
+    },
+
     get options() {
       if (!req.session.options)
         req.session.options = {
@@ -56,10 +63,10 @@ module.exports = {
   },
 
   async index(req, res, next) {
-    const { user, options } = helpers(req);
+    const { user, options, highlight } = helpers(req);
     try {
       const todos = await Todos.findAll(user, options);
-      res.render("todos", { todos, options, user });
+      res.render("todos", { todos, options, user, highlight });
     } catch (err) {
       next(err);
     }
@@ -68,8 +75,12 @@ module.exports = {
   async create(req, res, next) {
     try {
       // set to order by modified so you see the thing you just added...
-      const { options, user } = helpers(req);
-      req.session.options = { ...options, sortOn: "modified", sortDir: "ASC" };
+      const { user } = helpers(req);
+      req.session.options = {
+        search: null,
+        sortOn: "modified",
+        sortDir: "ASC",
+      };
 
       await Todos.create(user, req.body.todo);
       res.redirect("/todo");
@@ -90,9 +101,9 @@ module.exports = {
 
   async edit(req, res, next) {
     try {
-      const { user, options, id } = helpers(req);
+      const { user, options, id, highlight } = helpers(req);
       const todos = await Todos.findAll(user, options);
-      res.render("todos", { todos, editing: id, options, user });
+      res.render("todos", { todos, editing: id, options, user, highlight });
     } catch (err) {
       next(err);
     }

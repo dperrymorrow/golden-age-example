@@ -3,9 +3,7 @@ const cookieSession = require("cookie-session");
 const path = require("path");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
-const res = require("express/lib/response");
-const app = module.exports = express();
-// const OAuthServer = require('express-oauth-server')
+const app = (module.exports = express());
 
 require("dotenv").config();
 
@@ -23,7 +21,7 @@ app.engine(".html", require("ejs").__express);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "html");
 
-function hasAuth (req, res, next) {
+function hasAuth(req, res, next) {
   if (req.session.user) return next();
   else return res.redirect("/oauth");
 }

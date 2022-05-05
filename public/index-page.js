@@ -1,46 +1,46 @@
+import debounce from "https://unpkg.com/p-debounce@4.0.0/index.js";
+
 export default {
   path: ["/todo", "/todo/{id}/edit"],
   hooks: {
-    afterFirstRender(app, event) {
-      const $input = document.querySelector(".edit-title-input");
+    afterFirstRender({ $root }) {
+      const $input = $root.querySelector(".edit-title-input");
       if ($input) {
         $input.scrollIntoView({ behavior: "smooth" });
         $input.focus();
       }
     },
 
-    afterRender(app, event) {
-      const $input = document.querySelector(".edit-title-input");
+    afterRender({ $root }) {
+      const $input = $root.querySelector(".edit-title-input");
       if ($input) $input.focus();
     },
   },
 
   events: {
-    "change input[type=\"checkbox\"]": (app, { target }) => {
-      app.sendForm(target.closest("form"), { todo: { complete: target.checked } });
+    "change input[type='checkbox']": ({ sendForm }, { target }) => {
+      sendForm(target, {
+        todo: { complete: target.checked },
+      });
     },
 
-    "keyup input[type='search']": (app, ev) => {
-      app.sendForm(ev.target.closest("form"));
+    "input input[type='search']": debounce(({ sendForm }, ev) => {
+      sendForm(ev.target);
+    }, 300),
+
+    "keydown:Escape input[type='search']": ({ sendForm }, { target }) => {
+      target.value = "";
+      sendForm(target);
     },
 
-    "keydown:Escape input[type='search']": (app, ev) => {
-      ev.target.value = "";
-      app.sendForm(ev.target.closest("form"));
-    },
-
-    "keydown:Enter .new-todo input[type='text']": async (app, ev) => {
+    "keydown:Enter .new-todo input[type='text']": async (app, { target }) => {
       await app.nextRender();
-      ev.target.value = "";
+      target.value = "";
       window.scrollTo({
         left: 0,
         top: document.body.scrollHeight,
         behavior: "smooth",
       });
-    },
-
-    "keydown:Enter .edit-title-input": (app, { target }) => {
-      app.sendForm(target.closest("form"));
     },
 
     "keydown:Escape .edit-title-input": (app) => app.get("/todo"),
