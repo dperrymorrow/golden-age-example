@@ -1,0 +1,22 @@
+<div class="paginate-bar">
+  <div>
+    <a <%= options.page === 0 ? 'disabled="true"' : null %> role="button" href="/todo?page=0">
+      <i class="fa-solid fa-angles-left"></i>
+    </a>
+    <a <%= options.page === 0 ? 'disabled="true"' : null %> role="button" href="/todo?page=<%= options.page - 1 %>">
+      <i class="fa-solid fa-angle-left"></i>
+    </a>
+  </div>
+
+
+  <div>Page <%= options.page + 1 %> of <%= numPages + 1 %></div>
+
+  <div>
+    <a <%= options.page === numPages ? 'disabled="true"' : null %> role="button" href="/todo?page=<%= options.page + 1 %>">
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+    <a <%= options.page === numPages ? 'disabled="true"' : null %> role="button" href="/todo?page=<%= numPages %>">
+      <i class="fa-solid fa-angles-right"></i>
+    </a>
+  </div>
+</div>

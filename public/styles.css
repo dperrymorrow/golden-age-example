@@ -13,6 +13,16 @@ input[type="submit"] span {
   margin-right: 0.3rem;
 }
 
+.paginate-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paginate-bar a[role="button"] {
+  display: inline-flex;
+}
+
 .slim {
   margin: 0;
 }

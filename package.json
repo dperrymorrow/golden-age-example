@@ -26,6 +26,7 @@
   "homepage": "https://github.com/dperrymorrow/golden-age-example#readme",
   "dependencies": {
     "@octokit/core": "^3.6.0",
+    "@prisma/client": "^3.13.0",
     "body-parser": "^1.19.1",
     "cookie-session": "^2.0.0",
     "dotenv": "^16.0.0",

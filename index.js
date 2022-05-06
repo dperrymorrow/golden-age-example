@@ -2,7 +2,8 @@ const express = require("express");
 const cookieSession = require("cookie-session");
 const path = require("path");
 const bodyParser = require("body-parser");
-const routes = require("./routes");
+const todoRoutes = require("./routes/todos");
+const authRoutes = require("./routes/oauth");
 const app = (module.exports = express());
 
 require("dotenv").config();
@@ -31,18 +32,19 @@ app.get("/", (req, res) => {
   res.redirect("/todo");
 });
 
-app.get("/oauth", routes.oauthStart);
-app.get("/oauth-finish", routes.oauthFinish);
+app.get("/oauth", authRoutes.oauthStart);
+app.get("/oauth-finish", authRoutes.oauthFinish);
+app.get("/logout", hasAuth, authRoutes.logout);
 
-app.get("/logout", hasAuth, routes.logout);
-app.get("/todo", hasAuth, routes.index);
-app.post("/todo", hasAuth, routes.create);
-app.get("/todo/:id", hasAuth, routes.show);
-app.get("/todo/:id/edit", hasAuth, routes.edit);
+app.get("/todo", hasAuth, todoRoutes.index);
+app.post("/todo", hasAuth, todoRoutes.create);
+app.get("/todo/:id", hasAuth, todoRoutes.show);
+app.get("/todo/:id/edit", hasAuth, todoRoutes.edit);
 
+// cause HTML forms can only do POST/GET
 app.post("/todo/:id", hasAuth, (req, res) => {
-  if (req.body._method === "DELETE") routes.destroy(req, res);
-  else routes.update(req, res);
+  if (req.body._method === "DELETE") todoRoutes.destroy(req, res);
+  else todoRoutes.update(req, res);
 });
 
 app.listen(3001);
