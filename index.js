@@ -39,7 +39,7 @@ app.get("/logout", hasAuth, authRoutes.logout);
 app.get("/todo", hasAuth, todoRoutes.index);
 app.post("/todo", hasAuth, todoRoutes.create);
 app.get("/todo/:id", hasAuth, todoRoutes.show);
-app.get("/todo/:id/edit", hasAuth, todoRoutes.edit);
+app.get("/todo/:id/edit", hasAuth, todoRoutes.index);
 
 // cause HTML forms can only do POST/GET
 app.post("/todo/:id", hasAuth, (req, res) => {

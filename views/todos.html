@@ -32,8 +32,8 @@
         <table class="todo-list">
           <thead>
             <tr>
-              <% Object.entries({complete: "Completed", title: "Title",
-              modified: "Last Updated"}).forEach(([key, val]) => { %> <%-
+              <% Object.entries({complete: "Done", title: "Title", modified:
+              "Last Updated"}).forEach(([key, val]) => { %> <%-
               include("_partials/th.html", { field: key, label: val }) %> <% })
               %>
 
@@ -43,7 +43,7 @@
           <tbody>
             <% todos.forEach(todo=> { %>
             <tr>
-              <td>
+              <td width="10%">
                 <form action="/todo/<%= todo.id %>" method="POST">
                   <input type="hidden" name="_method" value="PUT" />
                   <input type="checkbox" <%= todo.complete ? 'checked="true"' :
@@ -67,17 +67,19 @@
 
               <% } else { %>
 
-              <td>
+              <td width="25%">
                 <a href="/todo/<%= todo.id %>">
                   <%- helpers.highlight(todo.title) %>
                 </a>
               </td>
 
-              <td><%= new Date(todo.modified).toLocaleString() %></td>
+              <td width="25%">
+                <%= new Date(todo.modified).toLocaleString() %>
+              </td>
 
               <% } %>
 
-              <td class="center">
+              <td width="30%">
                 <div class="btn-container">
                   <a href="/todo/<%= todo.id %>/edit" role="button">
                     <i class="fa-solid fa-pencil"></i>

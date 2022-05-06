@@ -9,6 +9,7 @@ module.exports = {
   async index(req, res, next) {
     const user = req.session.user;
     const { options } = helpers(req);
+    const editing = req.params.id ? Number(req.params.id) : null;
 
     const where = options.search
       ? { userId: user.id, title: { contains: options.search } }
@@ -31,6 +32,7 @@ module.exports = {
         numPages: Math.floor(total / perPage),
         todos,
         options,
+        editing,
         user,
         helpers: viewHelpers(req),
       });
@@ -49,9 +51,13 @@ module.exports = {
           modified: new Date(),
         },
       });
-      req.session.options.page = 0;
-      req.session.options.sortOn = "modified";
-      req.session.options.sortDir = "desc";
+
+      req.session.options = {
+        ...req.session.options,
+        page: 0,
+        sortOn: "modified",
+        sortDir: "desc",
+      };
 
       res.redirect("/todo");
     } catch (err) {
@@ -71,24 +77,24 @@ module.exports = {
     }
   },
 
-  async edit(req, res, next) {
-    const id = Number(req.params.id);
-    const user = req.session.user;
-    const { options } = helpers(req);
+  // async edit(req, res, next) {
+  //   const id = Number(req.params.id);
+  //   const user = req.session.user;
+  //   const { options } = helpers(req);
 
-    try {
-      const todos = await prisma.todo.findMany({ where: { userId: user.id } });
-      res.render("todos", {
-        todos,
-        editing: id,
-        options,
-        user,
-        helpers: viewHelpers(req),
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
+  //   try {
+  //     const todos = await prisma.todo.findMany({ where: { userId: user.id } });
+  //     res.render("todos", {
+  //       todos,
+  //       editing: id,
+  //       options,
+  //       user,
+  //       helpers: viewHelpers(req),
+  //     });
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // },
 
   async destroy(req, res, next) {
     const id = Number(req.params.id);

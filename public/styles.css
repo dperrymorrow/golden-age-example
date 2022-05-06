@@ -19,7 +19,7 @@ input[type="submit"] span {
   align-items: center;
 }
 
-.paginate-bar a[role="button"] {
+.paginate-bar a {
   display: inline-flex;
 }
 
