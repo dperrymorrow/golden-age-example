@@ -43,7 +43,7 @@
           <tbody>
             <% todos.forEach(todo=> { %>
             <tr>
-              <td width="10%">
+              <td width="5%">
                 <form action="/todo/<%= todo.id %>" method="POST">
                   <input type="hidden" name="_method" value="PUT" />
                   <input type="checkbox" <%= todo.complete ? 'checked="true"' :
@@ -53,7 +53,7 @@
 
               <% if (locals.editing===todo.id) { %>
 
-              <td colspan="2">
+              <td colspan="3">
                 <form class="block" action="/todo/<%= todo.id %>" method="POST">
                   <input type="hidden" name="_method" value="PUT" />
                   <input
@@ -67,19 +67,19 @@
 
               <% } else { %>
 
-              <td width="25%">
+              <td width="35%">
                 <a href="/todo/<%= todo.id %>">
                   <%- helpers.highlight(todo.title) %>
                 </a>
               </td>
 
-              <td width="25%">
+              <td width="15%">
                 <%= new Date(todo.modified).toLocaleString() %>
               </td>
 
               <% } %>
 
-              <td width="30%">
+              <td width="15%">
                 <div class="btn-container">
                   <a href="/todo/<%= todo.id %>/edit" role="button">
                     <i class="fa-solid fa-pencil"></i>
@@ -99,6 +99,7 @@
                 </div>
               </td>
             </tr>
+
             <% }); %>
           </tbody>
         </table>
