@@ -3,46 +3,45 @@ import debounce from "https://unpkg.com/p-debounce@4.0.0/index.js";
 export default {
   path: ["/todo", "/todo/{id}/edit"],
   hooks: {
-    afterFirstRender({ $root }) {
-      const $input = $root.querySelector(".edit-title-input");
-      if ($input) {
-        $input.scrollIntoView({ behavior: "smooth" });
-        $input.focus();
+    afterFirstRender({ $ }) {
+      if ($.editInput) {
+        $.editInput.scrollIntoView({ behavior: "smooth" });
+        $.editInput.focus();
       }
     },
 
-    afterRender({ $root }) {
-      const $input = $root.querySelector(".edit-title-input");
-      if ($input) $input.focus();
+    afterRender({ $ }) {
+      if ($.editInput) $.editInput.focus();
     },
   },
 
   events: {
-    "change input[type='checkbox']": ({ sendForm }, { target }) => {
-      sendForm(target, {
-        todo: { complete: target.checked },
-      });
-    },
+    // "change $.doneCheckbox": ({ sendForm }, { target }) => {
+    //   sendForm(target, {
+    //     todo: { complete: target.checked },
+    //   });
+    // },
 
-    "input input[type='search']": debounce(({ sendForm }, ev) => {
+    "input $.searchInput": debounce(async ({ sendForm }, ev) => {
       sendForm(ev.target);
     }, 300),
 
-    "keydown:Escape input[type='search']": ({ sendForm }, { target }) => {
-      target.value = "";
-      sendForm(target);
+    "keydown:Escape $.searchInput": ({ $, sendForm }) => {
+      $.searchInput.value = "";
+      sendForm($.searchInput);
     },
 
-    "keydown:Enter .new-todo input[type='text']": async (app, { target }) => {
-      await app.nextRender();
-      target.value = "";
-      window.scrollTo({
-        left: 0,
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-      });
+    "keydown:Enter $.newInput": async ({ $, nextRender }) => {
+      await nextRender();
+      $.newInput.scrollIntoView({ behavior: "smooth" });
     },
 
-    "keydown:Escape .edit-title-input": (app) => app.get("/todo"),
+    // "click $.pencil": async ({ $, nextRender }) => {
+    //   debugger;
+    //   await nextRender();
+    //   $.editInput.focus();
+    // },
+
+    "keydown:Escape $.editInput": (app) => app.get("/todo"),
   },
 };

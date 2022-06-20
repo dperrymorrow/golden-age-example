@@ -4,6 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const todoRoutes = require("./routes/todos");
 const authRoutes = require("./routes/oauth");
+const tagRoutes = require("./routes/tags");
 const app = (module.exports = express());
 
 require("dotenv").config();
@@ -26,7 +27,6 @@ function hasAuth(req, res, next) {
   if (req.session.user) return next();
   else return res.redirect("/oauth");
 }
-
 // ROOT
 app.get("/", (req, res) => {
   res.redirect("/todo");
@@ -40,6 +40,8 @@ app.get("/todo", hasAuth, todoRoutes.index);
 app.post("/todo", hasAuth, todoRoutes.create);
 app.get("/todo/:id", hasAuth, todoRoutes.show);
 app.get("/todo/:id/edit", hasAuth, todoRoutes.index);
+
+app.post("/tag", hasAuth, tagRoutes.create);
 
 // cause HTML forms can only do POST/GET
 app.post("/todo/:id", hasAuth, (req, res) => {

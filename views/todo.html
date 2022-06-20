@@ -6,7 +6,28 @@
       <%- include("_partials/nav.html") %>
       <article>
         <header>
-          <h1 class="slim"><%= todo.title %></h1>
+          <h1 class="slim" data-au-ref="header"><%= todo.title %></h1>
+          <% todo.tags.forEach(tag => { %>
+          <span class="tag"><%= tag.key %></span>
+          <% }) %>
+
+          <form action="/tag" method="post" data-au-ref="tagForm">
+            <input type="hidden" name="todoId" value="<%= todo.id %>" />
+            <input
+              type="text"
+              list="tags"
+              name="tag[key]"
+              data-au-force
+              data-au-ref="tagInput"
+            />
+
+            <datalist id="tags">
+              <% tags.forEach(tag => { %>
+              <option value="<%= tag.key %>"><% }) %></option>
+            </datalist>
+
+            <input type="submit" value="save" />
+          </form>
         </header>
 
         <form method="POST" action="/todo/<%= todo.id %>">
@@ -14,13 +35,14 @@
             <div class="col-xs-6">
               <input type="hidden" name="_method" value="PUT" />
               <input
-                class="title-input"
                 placeholder="title"
                 type="text"
                 name="todo[title]"
+                data-au-ref="titleInput"
                 value="<%= todo.title %>"
               />
               <textarea
+                data-au-ref="mdTextarea"
                 placeholder="markdown description"
                 rows="10"
                 name="todo[description]"
@@ -39,7 +61,7 @@
                 </button>
               </div>
             </div>
-            <div class="col-xs-6" id="markdown-preview"></div>
+            <div class="col-xs-6" data-au-ref="mdPreview"></div>
           </div>
         </form>
       </article>

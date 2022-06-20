@@ -23,13 +23,19 @@
             />
             <% } %>
 
-            <input name="search" value="<%= options.search %>" type="search" />
+            <input
+              name="search"
+              value="<%= options.search %>"
+              type="search"
+              data-au-ref="searchInput"
+              data-au-force
+            />
           </form>
 
           <%- include("_partials/pagination.html") %>
         </header>
 
-        <table class="todo-list">
+        <table class="todo-list" role="grid">
           <thead>
             <tr>
               <% Object.entries({complete: "Done", title: "Title", modified:
@@ -42,25 +48,25 @@
           </thead>
           <tbody>
             <% todos.forEach(todo=> { %>
-            <tr>
+            <tr class="<%= todo.id === highlight ? 'highlight' : null %>">
               <td width="5%">
                 <form action="/todo/<%= todo.id %>" method="POST">
                   <input type="hidden" name="_method" value="PUT" />
-                  <input type="checkbox" <%= todo.complete ? 'checked="true"' :
-                  null %> />
+                  <input data-au-event="click:toggleDone" type="checkbox" <%=
+                  todo.complete ? 'checked="true"' : null %> />
                 </form>
               </td>
 
               <% if (locals.editing===todo.id) { %>
 
-              <td colspan="3">
+              <td colspan="2">
                 <form class="block" action="/todo/<%= todo.id %>" method="POST">
                   <input type="hidden" name="_method" value="PUT" />
                   <input
-                    class="edit-title-input"
                     type="text"
                     name="todo[title]"
                     value="<%= todo.title %>"
+                    data-au-ref="editTitleInput"
                   />
                 </form>
               </td>
@@ -71,6 +77,9 @@
                 <a href="/todo/<%= todo.id %>">
                   <%- helpers.highlight(todo.title) %>
                 </a>
+                <% todo.tags.forEach(tag => { %>
+                <span class="tag"><%= tag.key %></span>
+                <% }) %>
               </td>
 
               <td width="15%">
@@ -81,7 +90,11 @@
 
               <td width="15%">
                 <div class="btn-container">
-                  <a href="/todo/<%= todo.id %>/edit" role="button">
+                  <a
+                    href="/todo/<%= todo.id %>/edit"
+                    role="button"
+                    data-au-ref-list="pencil"
+                  >
                     <i class="fa-solid fa-pencil"></i>
                   </a>
 
@@ -112,6 +125,8 @@
                 type="text"
                 name="todo[title]"
                 placeholder="add another todo"
+                data-au-ref="newInput"
+                data-au-force
               />
             </label>
           </form>

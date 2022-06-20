@@ -13,8 +13,6 @@ module.exports = function (req) {
         };
 
       req.session.options = { ...req.session.options, ...(req.query || {}) };
-
-      console.log(req.session.options);
       return req.session.options;
     },
   };

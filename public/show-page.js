@@ -1,18 +1,23 @@
 import { parse } from "https://unpkg.com/marked@4.0.14/lib/marked.esm.js";
 
+function renderMarkdown($) {
+  $.mdPreview.innerHTML = parse($.mdTextarea.value);
+}
+
 export default {
   path: "/todo/{id}",
 
   hooks: {
-    afterFirstRender({ $root }) {
-      $root.querySelector("#markdown-preview").innerHTML = parse(
-        $root.querySelector("textarea").value
-      );
-    },
+    afterRender: ({ $ }) => renderMarkdown($),
+  },
 
-    afterRender({ $bind }) {
-      $bind(".title-input", "h1");
-      $bind("textarea", "#markdown-preview", (val) => parse(val));
+  events: {
+    "input $.mdTextarea": ({ $ }) => renderMarkdown($),
+    "input $.titleInput": ({ $ }) => ($.header.innerHTML = $.titleInput.value),
+
+    "submit $.tagForm": async ({ $, nextRender }) => {
+      await nextRender();
+      $.tagInput.focus();
     },
   },
 };

@@ -9,11 +9,32 @@ datasource db {
 
 model Todo {
   id          Int      @id @default(autoincrement())
-  parentId    Int?
   complete    Boolean? @default(false)
   userId      Int
   title       String
   description String?
-  created     DateTime
-  modified    DateTime
+  tags        Tag[]
+  subtasks    Subtask[]
+  created     DateTime @default(now())
+  modified            DateTime @default(now())
+}
+
+model Subtask {
+  id          Int      @id @default(autoincrement())
+  complete    Boolean? @default(false)
+  todoId      Int
+  userId      Int
+  title       String
+  todo        Todo     @relation(fields: [todoId], references: [id])
+  created     DateTime @default(now())
+  modified    DateTime @default(now())
+}
+
+model Tag {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  todos       Todo[]
+  key         String
+  created     DateTime @default(now())
+  modified    DateTime @default(now())
 }

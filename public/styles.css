@@ -1,3 +1,13 @@
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 button,
 a[role="button"],
 input[type="submit"] {
@@ -19,6 +29,14 @@ input[type="submit"] span {
   align-items: center;
 }
 
+.tag {
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+  border-radius: 0.3rem;
+  /* border: 1px solid orange; */
+  background-color: var(--secondary);
+}
+
 .paginate-bar a {
   display: inline-flex;
 }
@@ -28,9 +46,24 @@ input[type="submit"] span {
 }
 
 .highlight {
-  /* background-color: rgba(255, 253, 206, 0.3); */
-  /* border-radius: 0.3rem; */
   border-bottom: 1px solid orange;
+}
+
+tr.highlight td:first-child {
+  position: relative;
+}
+
+tr.highlight td:first-child:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 5px;
+  background-color: orange;
+  animation: fadeOut 1.3s ease;
+  animation-iteration-count: infinite;
+  opacity: 0;
 }
 
 .btn-container {

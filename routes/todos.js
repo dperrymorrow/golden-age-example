@@ -7,9 +7,11 @@ const perPage = 10;
 
 module.exports = {
   async index(req, res, next) {
-    const user = req.session.user;
     const { options } = helpers(req);
+
+    const user = req.session.user;
     const editing = req.params.id ? Number(req.params.id) : null;
+    const highlight = req.query.highlight ? Number(req.query.highlight) : null;
 
     const where = options.search
       ? { userId: user.id, title: { contains: options.search } }
@@ -20,6 +22,7 @@ module.exports = {
         where,
         skip: options.page * perPage,
         take: perPage,
+        include: { tags: true },
         orderBy: { [options.sortOn]: options.sortDir },
       });
 
@@ -33,6 +36,7 @@ module.exports = {
         todos,
         options,
         editing,
+        highlight,
         user,
         helpers: viewHelpers(req),
       });
@@ -43,23 +47,22 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      await prisma.todo.create({
+      const { id } = await prisma.todo.create({
         data: {
           ...req.body.todo,
           userId: req.session.user.id,
-          created: new Date(),
-          modified: new Date(),
         },
       });
 
       req.session.options = {
         ...req.session.options,
         page: 0,
+        search: null,
         sortOn: "modified",
         sortDir: "desc",
       };
 
-      res.redirect("/todo");
+      res.redirect(`/todo?highlight=${id}`);
     } catch (err) {
       next(err);
     }
@@ -70,31 +73,18 @@ module.exports = {
     const user = req.session.user;
 
     try {
-      const todo = await prisma.todo.findUnique({ where: { id } });
-      res.render("todo", { todo, user, helpers: viewHelpers(req) });
+      const tags = await prisma.tag.findMany({
+        where: { userId: req.session.user.id },
+      });
+      const todo = await prisma.todo.findUnique({
+        where: { id },
+        include: { tags: true },
+      });
+      res.render("todo", { tags, todo, user, helpers: viewHelpers(req) });
     } catch (err) {
       next(err);
     }
   },
-
-  // async edit(req, res, next) {
-  //   const id = Number(req.params.id);
-  //   const user = req.session.user;
-  //   const { options } = helpers(req);
-
-  //   try {
-  //     const todos = await prisma.todo.findMany({ where: { userId: user.id } });
-  //     res.render("todos", {
-  //       todos,
-  //       editing: id,
-  //       options,
-  //       user,
-  //       helpers: viewHelpers(req),
-  //     });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // },
 
   async destroy(req, res, next) {
     const id = Number(req.params.id);
