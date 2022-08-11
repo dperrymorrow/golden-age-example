@@ -4,37 +4,37 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model Todo {
-  id          Int      @id @default(autoincrement())
-  complete    Boolean? @default(false)
+  id          Int       @id @default(autoincrement())
+  complete    Boolean?  @default(false)
   userId      Int
   title       String
   description String?
   tags        Tag[]
   subtasks    Subtask[]
-  created     DateTime @default(now())
-  modified            DateTime @default(now())
+  created     DateTime  @default(now())
+  modified    DateTime  @default(now())
 }
 
 model Subtask {
-  id          Int      @id @default(autoincrement())
-  complete    Boolean? @default(false)
-  todoId      Int
-  userId      Int
-  title       String
-  todo        Todo     @relation(fields: [todoId], references: [id])
-  created     DateTime @default(now())
-  modified    DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  complete Boolean? @default(false)
+  todoId   Int
+  userId   Int
+  title    String
+  todo     Todo     @relation(fields: [todoId], references: [id])
+  created  DateTime @default(now())
+  modified DateTime @default(now())
 }
 
 model Tag {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  todos       Todo[]
-  key         String
-  created     DateTime @default(now())
-  modified    DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  todos    Todo[]
+  key      String
+  created  DateTime @default(now())
+  modified DateTime @default(now())
 }

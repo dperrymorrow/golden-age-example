@@ -23,13 +23,7 @@
             />
             <% } %>
 
-            <input
-              name="search"
-              value="<%= options.search %>"
-              type="search"
-              data-au-ref="searchInput"
-              data-au-force
-            />
+            <input name="search" value="<%= options.search %>" type="search" />
           </form>
 
           <%- include("_partials/pagination.html") %>
@@ -50,10 +44,14 @@
             <% todos.forEach(todo=> { %>
             <tr class="<%= todo.id === highlight ? 'highlight' : null %>">
               <td width="5%">
-                <form action="/todo/<%= todo.id %>" method="POST">
+                <form
+                  action="/todo/<%= todo.id %>"
+                  method="POST"
+                  class="checkbox-form"
+                >
                   <input type="hidden" name="_method" value="PUT" />
-                  <input data-au-event="click:toggleDone" type="checkbox" <%=
-                  todo.complete ? 'checked="true"' : null %> />
+                  <input type="checkbox" <%= todo.complete ? 'checked="true"' :
+                  null %> />
                 </form>
               </td>
 
@@ -66,7 +64,6 @@
                     type="text"
                     name="todo[title]"
                     value="<%= todo.title %>"
-                    data-au-ref="editTitleInput"
                   />
                 </form>
               </td>
@@ -90,11 +87,7 @@
 
               <td width="15%">
                 <div class="btn-container">
-                  <a
-                    href="/todo/<%= todo.id %>/edit"
-                    role="button"
-                    data-au-ref-list="pencil"
-                  >
+                  <a href="/todo/<%= todo.id %>/edit" role="button">
                     <i class="fa-solid fa-pencil"></i>
                   </a>
 
@@ -125,8 +118,6 @@
                 type="text"
                 name="todo[title]"
                 placeholder="add another todo"
-                data-au-ref="newInput"
-                data-au-force
               />
             </label>
           </form>
@@ -135,5 +126,11 @@
         </footer>
       </article>
     </div>
+
+    <script type="module" defer>
+      import { registerActions } from "/golden-age/dist/index.js";
+      import CheckboxForm from "/checkbox-form.js";
+      registerActions(CheckboxForm);
+    </script>
   </body>
 </html>

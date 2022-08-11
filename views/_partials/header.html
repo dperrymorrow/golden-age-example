@@ -12,9 +12,12 @@
   <title><%= title %></title>
 
   <script type="module">
-    import Patcher from "/golden-age/dist/index.js"
-    import IndexPage from "/index-page.js"
-    import ShowPage from "/show-page.js"
-    Patcher.create({ debug:false, pages: { IndexPage, ShowPage } })
+    import { startUp } from "/golden-age/dist/index.js"
+
+    // import { registerActions } from "/golden-age/dist/index.js";
+    // import CheckboxForm from "/checkbox-form.js";
+    // registerActions(CheckboxForm);
+
+    startUp();
   </script>
 </head>
